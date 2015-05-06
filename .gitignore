@@ -1,0 +1,13 @@
+#Ignorar el settings.py 
+settings.py
+wsgi.py
+
+#Ignorar todos los archivos que tengan esta extención
+*.pyc
+*.log
+*.pot
+
+#Direcctorio a ignorar
+.idea/
+carga/
+*migrations/
