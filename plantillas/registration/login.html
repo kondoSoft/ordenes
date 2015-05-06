@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load staticfiles %}
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <!-- Title and other stuffs -->
+    <title>Sistema de control escolar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+
+    <!-- Stylesheets -->
+    <link href="{% static "style/bootstrap.css" %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static "style/font-awesome.css" %}">
+    <link href="{% static "style/style.css" %}" rel="stylesheet">
+
+    <!-- HTML5 Support for IE -->
+    <!--[if lt IE 9]>
+  <script src="js/html5shim.js"></script>
+  <![endif]-->
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{% static "img/logo.png" %}">
+</head>
+
+<body>
+
+<!-- Form area -->
+<div class="admin-form">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-12">
+                <!-- Widget starts -->
+                <div class="widget">
+                    <!-- Widget head -->
+                    <div class="widget-head">
+                        <i class="icon-lock"></i> Inicio de Sesión
+                    </div>
+
+                    <div class="widget-content">
+                        <div class="padd">
+                            <!-- Login form -->
+                            <form class="form-horizontal" method="post"
+                                  action="{% url 'django.contrib.auth.views.login' %}">
+                                {% csrf_token %}
+
+                                <!-- Usuario -->
+
+                                {% if form.errors %}
+                                    <div class="error-log">
+                                        <span class="red">Credenciales no validas</span>
+                                    </div>
+                                {% endif %}
+                                <div class="form-group">
+                                    <label class="control-label col-lg-3" for="inputUsername">Usuario</label>
+
+                                    <div class="col-lg-9">
+                                        <input type="text" class="form-control inputMail" id="inputUsername"
+                                               placeholder="Ingresa tu usuario"
+                                               name="username">
+                                    </div>
+                                </div>
+
+                                <!-- Password -->
+                                <div class="form-group">
+                                    <label class="control-label col-lg-3" for="inputPassword">Contraseña</label>
+
+                                    <div class="col-lg-9">
+                                        <input type="password" class="form-control" id="inputPassword"
+                                               placeholder="Ingresa la contraseña" name="password">
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-9 col-lg-offset-3">
+                                    <button type="submit" class="btn btn-block btn-info">Iniciar sesión</button>
+
+                                </div>
+                                <br><br/>
+
+                                <div class="alert alert-warning">
+                                    <strong>
+                                        Se te ha olvidado la contraseña puedes <a href="{% url 'password_reset' %}">
+                                        ¡Recuperarla
+                                        aqui!</a>
+                                    </strong>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JS -->
+<script src="{% static "js/jquery.js" %}"></script>
+<script src="{% static "js/bootstrap.js" %}"></script>
+<script>
+
+</script>
+</body>
+</html>
