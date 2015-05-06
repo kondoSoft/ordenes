@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% block breadcrumbs %}
+{{ block.super }}
+ <span class="divider">/</span> 
+<a href="" class="active"><i class="bread-current"></i>crear cuenta</a> 
+{% endblock %}
+
+<!-- HTML5 Support for IE -->
+  <!--[if lt IE 9]>
+  <script src="js/html5shim.js"></script>
+  <![endif]-->
+
+  <!-- Main content starts -->
+
+  {% block contenido %}
+  {% if user.is_staff %}
+  <div class="widget">                
+    <div class="widget-head">
+      <div class="pull-left">Nueva cuenta</div>
+      
+      <div class="clearfix"></div>
+    </div>
+
+    <div class="widget-content">
+      <div class="padd">
+        
+        <form action="" class="validate" id='form1' method="post" enctype="multipart/form-data" name="form">{% csrf_token %}
+
+          <fieldset>
+            
+            
+            <div class="form-group">
+             {% include "form_snippet.html" with form=form %}
+             
+             
+             <button type="submit" class="btn btn-success">Guardar cuenta</button>
+             <button type="reset" class="btn btn-info">Limpiar</button>
+            <input type="button" class="btn btn-danger" onclick="history.go(-1)" value="Cancelar">
+
+           
+         </fieldset>
+       </form>
+       
+     </div>
+   </div>
+ </div>
+
+ <!-- Matter ends -->
+
+{% endif%}
+{% endblock contenido %}

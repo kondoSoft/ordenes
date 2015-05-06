@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <!-- Title and other stuffs -->
+  <title>Audio Express</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="author" content="">
+
+
+  <!-- Stylesheets -->
+  <link href="{% static "style/bootstrap.css" %}" rel="stylesheet">
+
+  <link href="{% static "style/bootstrap-switch.css" %}" rel="stylesheet">   
+  <!-- Font awesome icon -->
+   <link rel="stylesheet" href="{% static "css/font-awesome.css" %}">
+  <!-- jQuery UI -->
+  <link rel="stylesheet" href="{% static "style/jquery-ui-1.9.2.custom.min.css" %}">   
+  <!-- Calendar -->
+  <link rel="stylesheet" href="{% static "style/fullcalendar.css" %}"> 
+  <!-- prettyPhoto -->
+    <link rel="stylesheet" href="{% static "style/prettyPhoto.css" %}"> 
+    <!-- Star rating -->
+    <link rel="stylesheet" href="{% static "style/rateit.css" %}"> 
+  <!-- Date picker -->
+  <link rel="stylesheet" href="{% static "style/bootstrap-datetimepicker.min.css" %}">  
+  <!-- CLEditor -->
+  <link rel="stylesheet" href="{% static "style/jquery.cleditor.css" %}">   
+  <!-- Uniform -->     
+  <link rel="stylesheet" href="{% static "style/daterangepicker-bs3.css" %}">  
+  <!-- Main stylesheet -->
+  <link href="{% static "style/style.css" %}" rel="stylesheet">  
+  <!-- Widgets stylesheet -->
+  <link href="{% static "style/widgets.css" %}" rel="stylesheet">
+  <!-- Gritter Notifications stylesheet -->
+  <link href="{% static "style/jquery.gritter.css" %}" rel="stylesheet">     
+  <!-- jQuery Easypiechart stylesheet -->  
+  <link href="{% static "style/jquery.easy-pie-chart.css" %}" rel="stylesheet">
+
+  <link rel="stylesheet" href="{% static "js/datatables/css/dataTables.bootstrap.css" %}">
+
+  <link href="{% static "style/validationEngine.jquery.css" %}" rel="stylesheet"> 
+
+  <link href="{% static "style/skins/all.css" %}" rel="stylesheet">   
+
+  <link href="{% static "style/form.css" %}" rel="stylesheet">
+
+  <link rel="stylesheet" href="{% static "style/style.css" %}">
+
+  <link rel="stylesheet" href="{% static "js/jquery.timepicker.js" %}">
+
+<script type="text/javascript" src="{% static 'js/googleapis.jquery.min.js' %}"></script>
+
+
+  
+  <!-- HTML5 Support for IE -->
+  <!--[if lt IE 9]>
+  <script src="js/html5shim.js"></script>
+  <![endif]-->
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="{% static "img/favicon/logo.png" %}">
+</head>
+
+<body>
+  <header>
+    <div class="navbar navbar-fixed-top bs-docs-nav" role="banner">
+
+      <div class="container">
+        <!-- Menu button for smallar screens -->
+        
+        <div class="navbar-header">
+          <button class="navbar-toggle btn-navbar" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse"><span>Menu</span></button>
+          <a href="#" class="pull-left menubutton hidden-xs"><i class="fa fa-bars"></i></a>
+          <!-- Site name for smallar screens -->
+
+          <a href="{% url 'inicio' %}" class="navbar-brand"><img src="{% static "img/audio.png" %}" alt="" class="logo"></a>
+        </div>
+
+        <!-- Navigation starts -->
+        <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">         
+
+          <!-- Links -->
+          <ul class="nav navbar-nav pull-right">
+            <li class="dropdown pull-right user-data">            
+              <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                <i class='fa fa-user' ></i>
+                <img >Hola {{user.username}}<span class="bold"></span> <b class="caret"></b>  
+
+              </a>
+
+              <!-- Dropdown menu -->
+              <ul class="dropdown-menu">
+                <li><a href="{% if user.is_authenticated %}{% url 'logout' %}{% else %}{% url 'login' %}{% endif %}"><i class="fa fa-power-off"></i> Salir</a></li>
+                <li><a href="{% if user.is_authenticated %}{% url 'password_change' %}{% endif %}"><i class="fa fa-retweet"></i>Cambiar contraseña</a></li>
+              </ul>
+
+
+            </ul>
+          </nav>
+
+        </div>
+      </div>
+    </header>
+    <!-- Main content starts -->
+
+    <div class="content">
+
+     <!-- Sidebar -->
+     <div class="sidebar">
+       <div class="sidebar-dropdown"><a href="#">Navegación</a></div>
+
+
+
+       <ul id="nav">
+        <!-- Main menu with font awesome icon -->
+
+        <li><a href="{% url 'inicio' %}" class="open"><i class="fa fa-folder"></i> <span>Spots</span></a></li>
+
+        
+        {% if user.is_active and not user.is_staff %}
+        <li><a href="{% url 'ordenes' %}"><i class="fa fa-youtube-play"></i> <span>Nuevo Spot</span></a></li>
+        {% endif %}
+
+        {% if user.is_superuser %}
+        <li class="has_sub"><a href="#"><i class="fa fa-bars"></i> <span>Administración</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span></a>
+          <ul>
+            
+            <li><a href="{% url 'nuevo_usuario' %}">Nueva cuenta</a></li>
+            <li><a href="{% url 'usuarios' %}">Clientes</a></li>
+            <li><a href="{% url 'usuarios_admin' %}">Administradores</a></li>
+
+          </ul>
+        </li>
+        {% endif %}
+
+      </ul>
+    </div>
+    <!-- Sidebar ends -->
+
+    <!-- Main bar -->
+    <div class="mainbar">
+
+     <!-- Page heading -->
+     <div class="page-head">
+       {% if user.is_active and not user.is_staff %}
+       <h2>Registro</h2>
+       {% endif %} 
+       {% if user.is_staff %}
+       <h2 class="pull-left">Panel de control</h2>
+       {% endif %}
+
+       <div class="clearfix"></div>
+       <!-- Breadcrumb -->
+       <div class="bread-crumb">
+         {% block breadcrumbs %}
+
+         <a href="/" ><i class="fa fa-home"></i> Inicio</a> 
+
+
+         {% endblock %}
+       </div>
+
+       <div class="clearfix"></div>
+
+     </div>
+
+     <div class="matter">
+      <div class="container">
+
+        <!-- Today status. jQuery Sparkline plugin used. -->
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class="error-log">
+              {% if messages %}
+
+              
+              {% for message in messages %}
+              <span{% if message.tags %} class="green {{ message.tags }}"{% endif %}>{{ message }}</span>
+
+              {% endfor %}
+
+              {% endif %}
+            </div>
+
+            {% block contenido %}
+
+            {% endblock contenido %}
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+
+  </div>
+
+
+  <div class="clearfix"></div>
+
+</div>
+
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <!-- Copyright info -->
+        <p class="copy">Copyright &copy; 2013 | <a href="#">GrupoQuatro | Audio Express</a> </p>
+      </div>
+    </div>
+  </div>
+</footer> 	
+
+<!-- Footer ends -->
+
+<!-- Scroll to top -->
+<span class="totop"><a href="#"><i class="fa fa-chevron-up"></i></a></span> 
+
+<script src=" {% static "js/jquery.js" %} "></script> <!-- jQuery -->
+<script src=" {% static "js/bootstrap.js" %} "></script> <!-- Bootstrap -->
+<script src=" {% static "js/jquery-ui-1.9.2.custom.min.js" %} "></script> <!-- jQuery UI -->
+<script src="{% static "jquery-ui/jquery-ui.min.js" %}"></script>
+<script src=" {% static "js/fullcalendar.min.js" %} "></script> <!-- Full Google Calendar - Calendar -->
+<script src=" {% static "js/jquery.rateit.min.js" %} "></script> <!-- RateIt - Star rating -->
+
+<!-- Morris JS -->
+<script src="{% static "js/raphael-min.js" %}"></script>
+<script src="{% static "js/morris.min.js" %}"></script>
+
+<!-- jQuery Flot -->
+<script src="{% static "js/excanvas.min.js" %}"></script>
+<script src="{% static "js/jquery.flot.js" %}"></script>
+<script src="{% static "js/jquery.flot.resize.js" %}"></script>
+<script src="{% static "js/jquery.flot.pie.js" %}"></script>
+<script src="{% static "js/jquery.flot.stack.js" %}"></script>
+
+<script src="{% static "js/datatables/js/jquery.dataTables.js" %}"></script>
+
+<!-- jQuery Notification - Noty -->
+<script src="{% static "js/jquery.noty.js" %}"></script> <!-- jQuery Notify -->
+<script src="{% static "js/themes/default.js" %}"></script> <!-- jQuery Notify -->
+<script src="{% static "js/layouts/bottom.js" %}"></script> <!-- jQuery Notify -->
+<script src="{% static "js/layouts/topRight.js" %}"></script> <!-- jQuery Notify -->
+<script src="{% static "js/layouts/top.js" %}"></script> <!-- jQuery Notify -->
+<script src="{% static "js/moment.min.js" %}"></script>
+<script src="{% static "js/daterangepicker.js" %}"></script>
+<script src="{% static "js/sparklines.js" %}"></script> <!-- Sparklines -->
+<script src="{% static "js/jquery.cleditor.min.js" %}"></script> <!-- CLEditor -->
+
+<script src="{% static "js/bootstrap-switch.min.js" %}"></script> <!-- Bootstrap Toggle -->
+<script src="{% static "js/filter.js" %}"></script> <!-- Filter for support page -->
+<script src="{% static "js/custom.js" %}"></script> <!-- Custom codes -->
+<script src="{% static "js/charts.js" %}"></script> <!-- Charts & Graphs -->
+
+<script src="{% static "js/index.js" %}"></script> <!-- Index Javascripts -->
+<script src="{% static "js/dropzone.js" %}"></script> <!-- jQuery Dropzone -->
+<script src="{% static "js/jquery.maskedinput.min.js" %}"></script> <!-- jQuery Masked Input -->
+<script src="{% static 'js/jquery.icheck.min.js' %}"></script>
+<script src="{% static 'js/validate/jquery.validate.min.js' %}"></script>
+<script type="text/javascript" src="{% static "jqueryform/jquery.form.js" %}"></script>
+<script src="{% static "js/jquery.validationEngine.js" %}"></script>
+<script src="{% static 'js/languages/jquery.validationEngine-es.js' %}"></script>
+<script src="{% static "js/jquery.slimscroll.min.js" %}"></script>
+
+<script src="{% static "js/jquery.fileupload.js" %}"></script>
+<!-- The File Upload processing plugin -->
+<script src="{% static "js/jquery.fileupload-process.js" %}"></script>
+<!-- The File Upload image preview & resize plugin -->
+<script src="{% static "js/jquery.fileupload-image.js" %}"></script>
+<!-- The File Upload audio preview plugin -->
+<script src="{% static "js/jquery.fileupload-audio.js" %}"></script>
+<!-- The File Upload video preview plugin -->
+<script src="{% static "js/jquery.fileupload-video.js" %}"></script>
+<!-- The File Upload validation plugin -->
+<script src="{% static "js/jquery.fileupload-validate.js" %}"></script>
+
+<script language="javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<script src="{% static "js/jquery.mousewheel.js" %}"></script>
+
+<script src="{% static "js/jquery-ui-timepicker-addon.js" %}"></script>
+<script type="text/javascript" src="{% static 'bootstrap-filestyle/src/bootstrap-filestyle.js' %}"></script>
+<script src="{% static "js/jquery.prettyPhoto.js" %}"></script>
+
+
+<script src="//code.jquery.com/jquery-1.9.1.js"></script>
+<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+{% block script %}
+{% endblock script%}
+
+<script type="text/javascript">
+function confirmar(id){
+  if (confirm("¿Seguro que desea editar la orden?")) {
+     // Respuesta afirmativa..
+     window.location.href = '/ordenes/editar/'+id;
+   }
+
+ }
+   $('#id_archivo_texto').filestyle({
+            iconName: 'glyphicon-file',
+            buttonText: 'Agregue archivo de texto'
+
+        });
+   
+ </script>
+
+ <script>
+ $(function(){
+   if ($(this).find("option:selected").text() != 'Otra duracion'){
+
+    $("input#id_otro").val('');
+    $("input#id_otro").attr('disabled','disabled');
+  }
+  $("#id_duracion").change(function (){
+    if ($(this).find("option:selected").text() != 'Otra duracion'){
+
+      $("input#id_otro").val('');
+      $("input#id_otro").attr('disabled','disabled');
+    }
+    else{
+      $("input#id_otro").removeAttr('disabled');      
+    }
+    
+  });
+});
+ </script>
+
+ <script>
+ $(function() {
+  $( "#datepicker" ).datepicker({ dateFormat: "dd/mm/yy"});
+  $( "#datepickers" ).datepicker({ dateFormat: "dd/mm/yy"});
+  $( "#datepickerss" ).datepicker({ dateFormat: "dd/mm/yy"});
+  $("#id_archivo_referencia").filestyle({ iconName: 'glyphicon-film', buttonText: 'Agregue archivo de audio o video'});
+});
+ </script>
+
+ <script>
+ $(function(){
+  var x = 0
+  if(x=='1'){
+    $('#id_nombre').attr('readonly','readonly');
+  }
+})
+
+ </script>
+
+<!--- Aqui es para los select-->
+
+<!--- #######################################################################################33 -->
+
+<script type="text/javascript"> 
+function limpiar_select() { 
+  var id_p= document.form; 
+  if(id_p.id_estado.value==""){ 
+    var options = '<option value="">-----</option>'; 
+    $('#id_estado').html(options); } } 
+    </script>
+
+    <!-- The XDomainRequest Transport is included for cross-domain file deletion for IE 8 and IE 9 -->
+<!--[if (gte IE 8)&(lt IE 10)]>
+<script src="js/cors/jquery.xdr-transport.js"></script>
+<![endif]-->
+
+</body>
+</html>

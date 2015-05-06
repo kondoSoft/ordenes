@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% block breadcrumbs %}
+{{ block.super }}
+<!-- Divider -->
+<span class="divider">/</span> 
+<a href="" class="active"><i class="bread-current"></i>spots</a> 
+<span class="divider">/</span> 
+<a href="" class="active"><i class="bread-current"></i>detalles spot</a> 
+{% endblock %}
+
+{% block contenido %}
+
+
+<div class="widget">
+
+  <div class="widget-head">
+    <div class="pull-left">Lista de Spots</div>
+    <div align="right">
+      <button class="btn btn-xs btn-danger" onclick=location.href="{% url 'detalle_spots_usuarios_pdf' dato.id%}" ><i class="label label-danger" ></i>Generar PDF Detalles</button>
+    </div>
+    <div class="clearfix"></div>
+    
+    
+  </div>
+  
+
+
+  <div class="widget-content">
+
+    <table id="datatable" class="table table-striped table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nombre de Spot</th>
+          <th>Duración</th>
+          <th>Descripción</th>
+          <th>Archivo de Texto</th>
+          <th>Archivo de Referencia</th>
+          <th>Fecha de captura</th>
+          <th>Servicios</th>
+          <th>Usuario</th>
+        </tr>
+      </thead>
+
+      <tr>
+        <td>{{forloop.counter}}</td>
+        <td>{{ dato.nombre }}</td>
+        {% if dato.duracion == 'otro' %}
+        <td>{{dato.otro}}</td>
+        {% else %}
+        <td>{{dato.duracion}}</td>
+        {% endif %}
+        <td>{{dato.descripcion}}</td>
+        
+        <td>
+          {% if dato.archivo_texto %}
+            <a target="_blank" href="{{ dato.archivo_texto.url }}">{{dato.archivo_texto}}</a>
+          {% endif %}
+        </td>
+        <td>
+          {% if dato.archivo_referencia %}
+            <a target="_blank" href="{{ dato.archivo_referencia.url }}">{{dato.archivo_referencia}}</a>
+          {% endif %}
+        </td>
+        <td> {{dato.fecha_orden}}</td>
+        <td>{{dato.numero_orden}}</td>
+        <td>{{dato.usuario}}</td>
+
+      </tr>
+      
+
+    </table>
+
+  </div>
+
+</div>
+
+<div class="widget">
+
+  <div class="widget-head">
+    <div class="pull-left">Historial</div>
+    <div class="clearfix"></div>
+  </div>
+
+  <div class="widget-content">
+
+    <table id="datatable" class="table table-striped table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nombre de spot</th>
+          <th>Duración</th>
+          <th>Descripción</th>
+          <th>Archivo de Texto</th>
+          <th>Archivo de Referencia</th>
+          <th>Fecha cambio</th>
+         
+        </tr>
+      </thead>
+{% for histo in historia %}
+      <tr>
+        <td>{{forloop.counter}}</td>
+        <td>{{histo.servicio}}</td>
+        <td>{{histo.duracion}}</td>
+        <td>{{histo.descripcion}}</td>
+        <td>
+        {% if histo.archivo_texto %}
+        <a href="{{histo.archivo_texto.url}}">{{histo.archivo_texto}}</a>
+        {% endif %}
+        </td>
+
+        <td>
+        {% if histo.archivo_referencia %}
+        <a href="{{histo.archivo_referencia.url}}">{{histo.archivo_referencia}}</a>
+        {% endif %}
+        </td>
+        <td>{{histo.fecha_cambio}}</td>
+       
+       
+
+
+      </tr>
+      {% empty %}
+        <tr>
+          <td colspan="4">No hay registro</td>
+        </tr>
+ {% endfor %}
+    </table>
+
+  </div>
+
+</div>
+
+{% endblock contenido %}

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% block breadcrumbs %}
+{{ block.super }}
+<!-- Divider -->
+<span class="divider">/</span> 
+<a href="" class="active"><i class="bread-current"></i>nuevo spot</a> 
+{% endblock %}
+
+{% block contenido %}
+<div class="col-md-8">
+  <div class="widget">                
+    <div class="widget-head">
+      <div class="pull-left">Nuevo Spot</div>
+      
+      <div class="clearfix"></div>
+    </div>
+
+    <div class="widget-content">
+      <div class="padd">
+        {% if user.is_active and not user.is_staff %}
+        <form action="" class="" id='form1' method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+
+          <fieldset>
+
+            <div class="form-group">
+              {% include "form_snippet.html" with form=ordenform %}
+
+            </div>
+
+            <div>
+              
+              <button type="submit" class="btn btn-success">Guardar spot</button>
+              <input type="button" class="btn btn-danger" onclick="window.location.href='/'" value="Cancelar">
+            </div>
+
+          </form>
+          {% endif %}
+          <br>
+        </div>
+
+
+
+
+      </div>
+    </div>
+  </div>
+
+
+  {% endblock contenido %}
+  {% block script %}
+  <script>
+  	$('label[for="id_otro"]').hide();
+  	$("#id_otro").hide();
+  	//$("#id_otro").val('');
+
+  	$("#id_duracion").on('change', function(){
+  		var selected = $("#id_duracion").val();
+  		if( selected == 'otro'){
+  			$('label[for="id_otro"]').show();
+  			$("#id_otro").show();
+  			$("#id_otro").val('');
+  		}
+  		else{
+  			  	$('label[for="id_otro"]').hide();
+  				$("#id_otro").hide();
+  				$("#id_otro").val('');
+  		}
+  	});
+
+
+    $('#id_archivo_texto').filestyle({
+      iconName: 'glyphicon-file',
+      buttonText: 'Agregue archivo de texto'
+
+    });
+
+    $('#id_archivo_referencia').filestyle({
+      iconName: 'glyphicon-film',
+      buttonText: 'Agregue archivo de audio o video'
+
+    });
+  </script>
+  {% endblock script %}
