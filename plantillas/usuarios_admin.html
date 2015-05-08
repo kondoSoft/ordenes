@@ -60,9 +60,11 @@
                                 {% endif %}
                             </td>
                             <td>
-                                <a href="{% url 'editar_usuarios_admin' admin.id %}"></a>
-                                <button class="btn btn-xs btn-warning">
-                                    <i class="fa fa-pencil"></i></button>
+                                <a id="edit_usuario" onclick="mensaje({{ admin.pk }})">
+                                    <button class="btn btn-xs btn-warning">
+                                        <i class="fa fa-pencil"></i></button>
+                                </a>
+
                                 {% if admin.estado_cliente == True %}
                                     <a href="{% url 'desactivar_usuario_admin' admin.pk %}">
                                         <button title="desactivar" class="btn btn-xs btn-danger"><i
@@ -115,4 +117,41 @@
 
 
     {% endif %}
-{% endblock contenido %}}
+    <div id="dialog-confirmacion-mensaje" style="display:none;">
+
+        <div class="alert alert-warning">
+
+            <h4><i class="fa fa-exclamation-triangle"></i> ¿Está seguro de editar este usuario?</h4>
+
+        </div>
+
+    </div>
+{% endblock contenido %}
+{% block script %}
+    <script>
+        function mensaje(id) {
+            $("#dialog-confirmacion-mensaje").dialog({
+{#                dialogClass: "widget",#}
+                title : 'Alerta!!',
+                resizable: false,
+                width: 400,
+{#                height: 250,#}
+                modal: true,
+                buttons: {
+
+                    "SI": function () {
+                        $(this).dialog("close");
+                        {#                        url : {% url 'editar_usuarios_admin' admin_usuario.id %}#}
+
+                        window.location.href = '/usuarios/editar_admin/' + id;
+                        console.log("entro");
+                    },
+                    "NO": function () {
+                        $(this).dialog("close");
+                    }
+                }
+
+            });
+        }
+    </script>
+{% endblock %}

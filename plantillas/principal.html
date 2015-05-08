@@ -5,7 +5,7 @@
 {% block contenido %}
 
     <div class="row">
-<div class="col-md-4"></div>
+        <div class="col-md-4"></div>
         <div class="col-md-8">
 
             <div class="padd">
@@ -76,7 +76,7 @@
                                 <th>Nombre de Spot</th>
                                 {% if user.is_staff %}
                                     <th>Usuario</th>{% endif %}
-                                <th></th>
+                                <th>Acciones</th>
                             </tr>
                             </thead>
 
@@ -90,6 +90,7 @@
                                         {% if user.is_staff %}
                                             <td>{{ usuario.usuario }}</td>
                                             <td>
+
                                                 <button class="btn btn-xs btn-success"
                                                         onclick=location.href="{% url 'detalle_spot' usuario.id %}"><i
                                                         class="label label-success"></i>Detalless
@@ -114,10 +115,10 @@
                                         <td>{{ forloop.counter }}</td>
                                         <td>{{ usuario.nombre }}</td>
                                         <td>
-                                            <a href="{% url 'editar_orden' usuario.id %}">
-                                                <button class="btn btn-xs btn-warning"
-                                                        onclick="confirmar({{ usuario.id }})"><i
-                                                        class="fa fa-pencil"></i></button>
+                                            <a onclick="mensaje({{ usuario.id }})">
+                                                <button class="btn btn-xs btn-warning">
+                                                    <i class="fa fa-pencil"></i>
+                                                </button>
                                             </a>
 
                                         </td>
@@ -230,14 +231,9 @@
 
                         {% endif %}
 
-
-
                     {% endif %}
 
                 </div>
-
-
-
 
                 {% if user.is_staff and not user.is_superuser %}
 
@@ -257,9 +253,7 @@
                             </thead>
                             <tbody>
 
-
                             {% for list_user in usuario_staff %}
-
 
                                 <tr>
                                     <td>{{ forloop.counter }}</td>
@@ -312,9 +306,7 @@
                             </thead>
                             <tbody>
 
-
                             {% for list_user in cambios_spot_staff %}
-
 
                                 <tr>
                                     <td>{{ forloop.counter }}</td>
@@ -330,7 +322,6 @@
                                             <a href="{{ list_user.archivo_referencia.url }}">{{ list_user.archivo_referencia }}</a>
                                         {% endif %}
                                     </td>
-
 
                                 </tr>
                             {% empty %}
@@ -349,19 +340,20 @@
         </div>
     </div>
 
+
+    <div id="dialog-confirmacion-mensaje" style="display:none;">
+
+        <div class="alert alert-warning">
+
+            <h4><i class="fa fa-exclamation-triangle"></i> ¿Está seguro de editar este spot?</h4>
+
+        </div>
+
     </div>
-
-
 {% endblock contenido %}
 {% block script %}
     <script type="text/javascript">
-        {#        function confirmar(id) {#}
-        {#            if (confirm("¿Seguro que desea editar la orden?")) {#}
-        {#                // Respuesta afirmativa..#}
-        {#                window.location.href = '/ordenes/editar/' + id;#}
-        {#            }#}
-        {##}
-        {#        }#}
+
         $(function () {
             $('#fechas_1').datetimepicker({
                 pickTime: false
@@ -370,5 +362,30 @@
                 pickTime: false
             });
         });
+
+        function mensaje(id) {
+            $("#dialog-confirmacion-mensaje").dialog({
+                {#                dialogClass: "widget",#}
+                title: 'Alerta!!',
+                resizable: false,
+                width: 400,
+                {#                height: 250,#}
+                modal: true,
+                buttons: {
+
+                    "SI": function () {
+                        $(this).dialog("close");
+                        {#                        url : {% url 'editar_usuarios_admin' admin_usuario.id %}#}
+
+                        window.location.href = '/ordenes/editar/' + id;
+                        console.log("entro");
+                    },
+                    "NO": function () {
+                        $(this).dialog("close");
+                    }
+                }
+
+            });
+        }
     </script>
 {% endblock script %}

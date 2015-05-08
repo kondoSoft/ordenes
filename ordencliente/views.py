@@ -10,37 +10,18 @@ import cStringIO as StringIO
 import cgi
 
 from django.template import RequestContext
-from django.template.loader import render_to_string
-import json
-from datetime import datetime
-from django.core import serializers
-from django.db.models import Max
-from django.views.generic import ListView, DetailView, View
-from django.views.generic.edit import CreateView, UpdateView
-from django.utils.decorators import method_decorator
-from django.contrib.auth.decorators import login_required, permission_required
-from django.core.exceptions import PermissionDenied
-from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.contrib.auth.models import User
-
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template.response import TemplateResponse
 from django.utils.decorators import method_decorator
-from django.db.models import Count
 from ordencliente.models import *
 from orden.forms import *
 from datetime import date
 from datetime import datetime
-
-import json
-from django.core import serializers
 
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.core.urlresolvers import reverse
@@ -93,8 +74,8 @@ def ordenes(request):
 
             subject = 'Notificación de spot nuevo'
             from_email = correo
-            #to = 'pacocorrea@grupoquatro.com'
-            to = 'raul.moscoso@utopiaw.com'
+            to = 'pacocorrea@grupoquatro.com'
+            #to = 'juarezm_90@hotmail.com'
             cc = enviar_correo
             text_content = 'Mensaje importante.'
             html_content = 'El usuario ' + '<b>' + usuario + '</b>' + ' con correo ' + '<b>' + correo + '</b>' ' ha creado el spot ' + '<b>' + nombre + '</b>'
@@ -514,9 +495,9 @@ def render_to_pdf(template_src, context_dict):
                             encoding='UTF-8',
                             link_callback=fetch_resources)
     if not pdf.err:
-        response = http.HttpResponse(result.getvalue(), mimetype='application/pdf')
+        response = http.HttpResponse(result.getvalue(), content_type='application/pdf')
         return response
-    return HttpResponse('We had some errors<pre>%s</pre>' % escape(html))
+    return HttpResponse('We had some errors<pre>%s</pre>' % cgi.escape(html))
 
 
 def fetch_resources(uri, rel):

@@ -69,7 +69,7 @@ class RegisterForm(forms.Form):
     password_two = forms.CharField(label='Confirmar contraseña', min_length=8,
                                    widget=forms.PasswordInput(render_value=False, attrs={
                                    'class': 'validate[required] form-control placeholder'}))
-    staff = forms.BooleanField(required=False)
+    staff = forms.BooleanField(required=False, label="Usuario staff")
 
     def clean_username(self):
         username = self.cleaned_data['username']
