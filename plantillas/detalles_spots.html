@@ -18,10 +18,12 @@
                     <h4>Generar reporte</h4>
 
                     <div class="form-group">
-                        <button title="Reporte" class="btn btn-primary"
-                                onclick=location.href="{% url 'detalle_spots_usuarios_pdf' dato.id %}">
+                        <a target="_blank" href="{% url 'detalle_spots_usuarios_pdf' dato.id %}">
+                            <button title="Reporte" class="btn btn-primary">
                             <i class="fa fa-file-pdf-o fa-lg"> </i> Generar reporte
                         </button>
+                        </a>
+
                     </div>
 
                 </div>
@@ -127,13 +129,13 @@
                         <td>{{ histo.descripcion }}</td>
                         <td>
                             {% if histo.archivo_texto %}
-                                <a href="{{ histo.archivo_texto.url }}">{{ histo.archivo_texto }}</a>
+                                <a target="_blank" href="{{ histo.archivo_texto.url }}">{{ histo.archivo_texto }}</a>
                             {% endif %}
                         </td>
 
                         <td>
                             {% if histo.archivo_referencia %}
-                                <a href="{{ histo.archivo_referencia.url }}">{{ histo.archivo_referencia }}</a>
+                                <a target="_blank" href="{{ histo.archivo_referencia.url }}">{{ histo.archivo_referencia }}</a>
                             {% endif %}
                         </td>
                         <td>{{ histo.fecha_cambio }}</td>

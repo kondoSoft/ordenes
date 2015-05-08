@@ -16,7 +16,7 @@
 
             <div class="padd">
                 {% if user.is_superuser %}
-                    <form action="/reporte_general_pdf/" method="post" class="">
+                    <form action="/reporte_general_pdf/" method="post" class="" target="_blank">
                         {% csrf_token %}
 
                         <div class="col-lg-3">

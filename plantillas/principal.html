@@ -183,18 +183,20 @@
                                         <td>{{ forloop.counter }}</td>
                                         <td>{{ usuario.username }}</td>
                                         <td>
-                                            <button class="btn btn-xs btn-success"
-                                                    onclick=location.href="{% url 'lista_spots_usuarios' usuario.id %}">
-                                                <i
-                                                        class="label label-success"></i>Ver Spots
-                                            </button>
+                                            <a href="{% url 'lista_spots_usuarios' usuario.id %}">
+                                                <button class="btn btn-xs btn-success">
+                                                    <i class="fa fa-file-text-o"></i> Ver Spots
+                                                </button>
+                                            </a>
+
                                         </td>
                                         <td>
-                                            <button class="btn btn-xs btn-danger"
-                                                    onclick=location.href="{% url 'lista_spots_usuarios_pdf' usuario.id %}">
-                                                <i
-                                                        class="label label-danger"></i>Generar PDF Spots
-                                            </button>
+                                            <a target="_blank" href="{% url 'lista_spots_usuarios_pdf' usuario.id %}">
+                                                <button class="btn btn-xs btn-danger">
+                                                    <i class="fa fa-file-pdf-o fa-lg"> </i> Generar reporte Spots
+                                                </button>
+                                            </a>
+
                                         </td>
 
 
