@@ -3,105 +3,58 @@
 {% load staticfiles %}
 
 {% block contenido %}
+
     <div class="row">
-        <div class="col-md-6">
+<div class="col-md-4"></div>
+        <div class="col-md-8">
 
-            <div class="widget">
+            <div class="padd">
+                {% if user.is_superuser %}
+                    <form action="/buscar/" method="post">
+                        {% csrf_token %}
 
-                <div class="widget-content">
-                    <div class="padd">
-                        {% if user.is_superuser %}
-                            <form action="/buscar/" method="post">
-                                {% csrf_token %}
+                        <div class="col-lg-4">
+                            <h4>Fecha inicial</h4>
 
-                                <h4>Fecha inicial</h4>
-
-
-                                <div id="datetimepicker1" class="input-append">
-                                    <input data-format="yyyy-MM-dd" type="text" class="form-control dtpicker"
-                                           name="f_inicial">
+                            <div id="fechas_1" class="input-append">
+                                <input data-format="dd/MM/yyyy" type="text"
+                                       class="form-control dtpicker"
+                                       name="f_inicial">
                         <span class="add-on">
                           <i data-time-icon="fa fa-time" data-date-icon="fa fa-calendar" class="btn btn-info"></i>
                         </span>
-                                </div>
+                            </div>
+                        </div>
 
+                        <div class="col-lg-4">
+                            <h4>Fecha final</h4>
 
-                                <hr/>
-
-                                <h4>Fecha final</h4>
-
-                                <div id="datetimepicker2" class="input-append">
-                                    <input data-format="yyyy-MM-dd" type="text" class="form-control dtpicker"
-                                           name="f_final">
+                            <div id="fechas_2" class="input-append">
+                                <input data-format="dd/MM/yyyy" type="text"
+                                       class="form-control dtpicker"
+                                       name="f_final">
                         <span class="add-on">
-                         <i data-time-icon="fa fa-time" data-date-icon="fa fa-calendar" class="btn btn-info"></i>
+                          <i data-time-icon="fa fa-time" data-date-icon="fa fa-calendar" class="btn btn-info"></i>
                         </span>
-                                </div>
-                                <hr/>
-                                <h4>Buscar usuario</h4>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <h4>Buscar usuario</h4>
 
-                                <div class="form-group">
-                                    <input type="text" name="buscar" id="busca" class="form-control">
-                                    <button class="btn search-button" type="submit">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                </div>
+                            <div class="form-group">
+                                <input type="text" name="buscar" id="busca" class="form-control"
+                                       placeholder="buscar spot/usuario">
+                                <button class="btn search-button busca-usuario" type="submit">
+                                    <i class="fa fa-search fa-lg"></i>
+                                </button>
+                            </div>
+                        </div>
 
-                            </form>
-                        {% endif %}
+                    </form>
+                {% endif %}
 
-
-                    </div>
-                </div>
             </div>
-
         </div>
-
-        {#        <div class="col-md-4 portlets ui-sortable">#}
-        {#            <!-- Widget -->#}
-        {#            <div class="widget">#}
-        {#                <!-- Widget title -->#}
-        {##}
-        {#                <div class="widget-content">#}
-        {#                    <!-- Widget content -->#}
-        {#                    <div class="padd">#}
-        {#                        {% if user.is_superuser %}#}
-        {#                            <form action="/buscar/" method="POST"> {% csrf_token %}#}
-        {##}
-        {#                                <div class="form-group">#}
-        {#                                    <label for="datepicker">Fecha Inicial: </label>#}
-        {#                                    <input type="text" name="f_inicial" id="datepicker" class="form-control">#}
-        {#                                </div>#}
-        {#                                <div class="form-group">#}
-        {#                                    <label for="datepickers">Fecha Final: </label>#}
-        {#                                    <input type="text" name="f_final" id="datepickers" class="form-control">#}
-        {#                                </div>#}
-        {#                                <div class="form-group">#}
-        {#                                    <label for="busca">Usuario: </label>#}
-        {#                                    <input type="text" name="buscar" id="busca" class="form-control">#}
-        {#                                    <button class="btn search-button" type="submit">#}
-        {#                                        <i class="fa fa-search"></i>#}
-        {#                                    </button>#}
-        {#                                </div>#}
-        {#                                <br/>#}
-        {##}
-        {#                                <div id="datetimepicker1" class="input-append">#}
-        {#                                    <input data-format="yyyy-MM-dd" type="text" class="form-control dtpicker">#}
-        {#                        <span class="add-on">#}
-        {#                          <i data-time-icon="fa fa-time" data-date-icon="fa fa-calendar" class="btn btn-info"></i>#}
-        {#                        </span>#}
-        {#                                </div>#}
-        {#                            </form>#}
-        {#                        {% endif %}#}
-        {#                    </div>#}
-        {##}
-        {##}
-        {#                </div>#}
-        {##}
-        {##}
-        {#            </div>#}
-        {#        </div>#}
-
     </div>
 
     <div class="row">
@@ -409,14 +362,11 @@
         {#            }#}
         {##}
         {#        }#}
-        {#        $("#datepicker").datepicker({dateFormat: "dd/mm/yy"});#}
-        {#        $("#datepickers").datepicker({dateFormat: "dd/mm/yy"});#}
-        {#        $("#datetimepicker1").datetimepicker();#}
         $(function () {
-            $('#datetimepicker1').datetimepicker({
+            $('#fechas_1').datetimepicker({
                 pickTime: false
             });
-            $('#datetimepicker2').datetimepicker({
+            $('#fechas_2').datetimepicker({
                 pickTime: false
             });
         });

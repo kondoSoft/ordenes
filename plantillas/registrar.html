@@ -2,52 +2,132 @@
 
 {% load staticfiles %}
 {% block breadcrumbs %}
-{{ block.super }}
- <span class="divider">/</span> 
-<a href="" class="active"><i class="bread-current"></i>crear cuenta</a> 
+    {{ block.super }}
+    <span class="divider">/</span>
+    <a href="" class="active"><i class="bread-current"></i>crear cuenta</a>
 {% endblock %}
 
-<!-- HTML5 Support for IE -->
-  <!--[if lt IE 9]>
-  <script src="js/html5shim.js"></script>
-  <![endif]-->
 
-  <!-- Main content starts -->
+{% block contenido %}
+    {% if user.is_staff %}
+        <div class="widget">
+            <div class="widget-head">
+                <div class="pull-left">Nueva cuenta</div>
 
-  {% block contenido %}
-  {% if user.is_staff %}
-  <div class="widget">                
-    <div class="widget-head">
-      <div class="pull-left">Nueva cuenta</div>
-      
-      <div class="clearfix"></div>
-    </div>
+                <div class="clearfix"></div>
+            </div>
 
-    <div class="widget-content">
-      <div class="padd">
-        
-        <form action="" class="validate" id='form1' method="post" enctype="multipart/form-data" name="form">{% csrf_token %}
+            <div class="widget-content">
+                <div class="padd">
 
-          <fieldset>
-            
-            
-            <div class="form-group">
-             {% include "form_snippet.html" with form=form %}
-             
-             
-             <button type="submit" class="btn btn-success">Guardar cuenta</button>
-             <button type="reset" class="btn btn-info">Limpiar</button>
-            <input type="button" class="btn btn-danger" onclick="history.go(-1)" value="Cancelar">
+                    <form action="" class="validate" id='form1' method="post" enctype="multipart/form-data"
+                          name="form">{% csrf_token %}
 
-           
-         </fieldset>
-       </form>
-       
-     </div>
-   </div>
- </div>
 
- <!-- Matter ends -->
+                        <div class="form-group">
+                            <div class="skin skin-flat">
+                                <div class="skin-section">
+                                    <ul>
+                                        <li>
+                                            {% include "form_snippet.html" with form=form %}
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
 
-{% endif%}
+                        <button type="submit" class="btn btn-success">Guardar cuenta</button>
+                        <button type="reset" class="btn btn-info">Limpiar</button>
+                        <input type="button" class="btn btn-danger" onclick="history.go(-1)" value="Cancelar">
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Matter ends -->
+
+    {% endif %}
 {% endblock contenido %}
+{% block script %}
+    <script>
+        $(document).ready(function () {
+
+            $('.skin-minimal input').iCheck({
+                checkboxClass: 'icheckbox_minimal',
+                radioClass: 'iradio_minimal',
+                increaseArea: '20%'
+            });
+            $('.skin-square input').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+                increaseArea: '20%'
+            });
+            $('.skin-flat input').iCheck({
+                checkboxClass: 'icheckbox_flat-red',
+                radioClass: 'iradio_flat-red'
+            });
+            $('.skin-line input').each(function () {
+                var self = $(this),
+                        label = self.next(),
+                        label_text = label.text();
+
+                label.remove();
+                self.iCheck({
+                    checkboxClass: 'icheckbox_line-blue',
+                    radioClass: 'iradio_line-blue',
+                    insert: '<div class="icheck_line-icon"></div>' + label_text
+                });
+            });
+            $('.colors li').click(function () {
+                var self = $(this);
+
+                if (!self.hasClass('active')) {
+                    self.siblings().removeClass('active');
+
+                    var skin = self.closest('.skin'),
+                            color = self.attr('class') ? '-' + self.attr('class') : '',
+                            checkbox = skin.data('icheckbox'),
+                            radio = skin.data('iradio'),
+                            checkbox_default = 'icheckbox_minimal',
+                            radio_default = 'iradio_minimal';
+
+                    if (skin.hasClass('skin-square')) {
+                        checkbox_default = 'icheckbox_square', radio_default = 'iradio_square';
+                        checkbox == undefined && (checkbox = 'icheckbox_square-green', radio = 'iradio_square-green');
+                    }
+                    ;
+
+                    if (skin.hasClass('skin-flat')) {
+                        checkbox_default = 'icheckbox_flat', radio_default = 'iradio_flat';
+                        checkbox == undefined && (checkbox = 'icheckbox_flat-red', radio = 'iradio_flat-red');
+                    }
+                    ;
+
+                    if (skin.hasClass('skin-line')) {
+                        checkbox_default = 'icheckbox_line', radio_default = 'iradio_line';
+                        checkbox == undefined && (checkbox = 'icheckbox_line-blue', radio = 'iradio_line-blue');
+                    }
+                    ;
+
+                    checkbox == undefined && (checkbox = checkbox_default, radio = radio_default);
+
+                    skin.find('input, .skin-states .state').each(function () {
+                        var element = $(this).hasClass('state') ? $(this) : $(this).parent(),
+                                element_class = element.attr('class').replace(checkbox, checkbox_default + color).replace(radio, radio_default + color);
+
+                        element.attr('class', element_class);
+                    });
+
+                    skin.data('icheckbox', checkbox_default + color);
+                    skin.data('iradio', radio_default + color);
+                    self.addClass('active');
+                }
+                ;
+            });
+
+            $(".validate").validationEngine();
+
+        });
+    </script>
+{% endblock script %}

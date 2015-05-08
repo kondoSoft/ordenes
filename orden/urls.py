@@ -32,7 +32,9 @@ urlpatterns = patterns('',
 
                        url(r'^usuarios_admin/$', views.lista_usuarios_admin, name='usuarios_admin'),
 
-                       url(r'^usuarios/editar/(?P<id_cliente>\d+)$', views.editar_usuario, name='editar_usuarios'),
+                       url(r'^usuarios/editar_cliente/(?P<id_cliente>\d+)$', views.editar_usuario, name='editar_usuarios'),
+
+                       url(r'^usuarios/editar_admin/(?P<id_cliente>\d+)$', views.editar_usuario_admin, name='editar_usuarios_admin'),
 
 
                        url(r'^nuevo/$', views.nuevo_usuario, name='nuevo_usuario'),
@@ -53,6 +55,12 @@ urlpatterns = patterns('',
 
                        url(r'^detalle_spots_pdf/(?P<id_servicio>\d+)$', views.detalle_spots_usuarios_pdf,
                            name='detalle_spots_usuarios_pdf'),
+
+                       url(r'^activar_admin/(?P<id_usuario>\d+)$', views.usuario_admin_activar, name='activar_usuario_admin'),
+                       url(r'^desactivar_admin/(?P<id_usuario>\d+)$', views.usuario_admin_desactivar, name='desactivar_usuario_admin'),
+
+                       url(r'^activar/(?P<id_usuario>\d+)$', views.usuario_activar, name='activar_usuario'),
+                       url(r'^desactivar/(?P<id_usuario>\d+)$', views.usuario_desactivar, name='desactivar_usuario'),
 
                        url(r'^password/change/$',
                            auth_views.password_change,

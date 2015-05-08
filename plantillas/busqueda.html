@@ -2,115 +2,202 @@
 
 {% load staticfiles %}
 {% block breadcrumbs %}
-{{ block.super }}
-<!-- Divider -->
-          <span class="divider">/</span> 
-<a href="" class="active"><i class="bread-current"></i>busqueda</a> 
+    {{ block.super }}
+    <!-- Divider -->
+    <span class="divider">/</span>
+    <a href="" class="active"><i class="bread-current"></i>busqueda</a>
 {% endblock %}
 
 {% block contenido %}
+    <div class="row">
 
 
-<body>
+        <div class="col-md-12">
 
-  <div class="widget">
+            <div class="padd">
+                {% if user.is_superuser %}
+                    <form action="/reporte_general_pdf/" method="post" class="">
+                        {% csrf_token %}
 
-    <div class="widget-head">
-      <div class="pull-left">Lista de Spots</div>
-      
-      <form action="/reporte_general_pdf/" method="POST"> {% csrf_token %}
-        <div class="pull-right">
-          <label for="">Fecha Inicial: <input type="text" name="f_inicial" value="{{fecha_1}}" id="datepicker"></label>
-          <label for="">Fecha Final: <input type="text" name="f_final" value="{{fecha_2}}" id="datepickers"></label>
-          
+                        <div class="col-lg-3">
+                            <h4>Fecha inicial</h4>
 
-          <label for="">Spot o Usuario: <input type="text" name="buscar" value="{{buscar}}"></label>
+                            <div id="fechas_1" class="input-append">
+                                {% if fecha_1 == '' %}
+                                    <input data-format="dd/MM/yyyy" type="text"
+                                           class="form-control dtpicker"
+                                           name="f_inicial">
+                                {% else %}
+                                    <input data-format="dd/MM/yyyy" type="text"
+                                           class="form-control dtpicker"
+                                           name="f_inicial" value="{{ fecha_1 }}">
+                                {% endif %}
 
-          <button class="btn btn-xs btn-danger"><i class="label label-danger"></i>Generar PDF</button>
-          
+                                <span class="add-on">
+                          <i data-time-icon="fa fa-time" data-date-icon="fa fa-calendar" class="btn btn-info"></i>
+                        </span>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <h4>Fecha final</h4>
+
+                            <div id="fechas_2" class="input-append">
+                                {% if fecha_2  == '' %}
+                                    <input data-format="dd/MM/yyyy" type="text"
+                                           class="form-control dtpicker"
+                                           name="f_final">
+                                {% else %}
+                                    <input data-format="dd/MM/yyyy" type="text"
+                                           class="form-control dtpicker"
+                                           name="f_final" value="{{ fecha_2 }}">
+                                {% endif %}
+
+                                <span class="add-on">
+                          <i data-time-icon="fa fa-time" data-date-icon="fa fa-calendar" class="btn btn-info"></i>
+                        </span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <h4>Buscar usuario</h4>
+
+                            <div class="form-group">
+                                <input type="text" name="buscar" id="busca" class="form-control"
+                                       placeholder="buscar spot/usuario" value="{{ buscar }}">
+
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <h4>Generar reporte</h4>
+
+                            <div class="form-group">
+                                <button title="Reporte" class="btn btn-primary"><i
+                                        class="fa fa-file-pdf-o fa-lg"> </i> Generar reporte
+                                </button>
+                            </div>
+
+                        </div>
+
+                    </form>
+                {% endif %}
+
+            </div>
         </div>
-      </form>
-
-      <div class="clearfix"></div>
-    </div>
-
-    <div class="widget-content">
-
-      <table id="datatable" class="table table-striped table-bordered table-hover">
-        <thead>
-          <tr>
-
-            <th>Nombre del spot</th>
-            <th>Fecha de Orden</th>
-            <th>Servicios</th>
-            <th>Usuario</th>
-            
-          </tr>
-        </thead>
-
-        {% for usuario in consulta %}
-
-        <tr>
-
-          <td>{{ usuario.nombre }}</td>
-          <td> {{usuario.fecha_orden}}</td>
-          <td>{{usuario.numero_orden}}</td>
-          <td>{{usuario.usuario}}</td>
-          <td>
-        <button class="btn btn-xs btn-success" onclick=location.href="{% url 'detalle_spot' usuario.id %}"><i class="label label-success"></i>Detalles</button>
-      </td>
-
-        </tr>
-        {% endfor %}
-
-      </table>
-
-
-
-
-      <br>
-
-        
-
-
 
     </div>
 
-  </div>
 
-  <div class="widget">
-    <div class="widget-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="widget">
 
-     <table id="datatable" class="table table-striped table-bordered table-hover">
-      <thead>
-        <tr>
+                <div class="widget-head">
+                    <div class="pull-left">Lista de Spots</div>
 
-          <th>Nombre</th>
-          <th>Fecha Modificación</th>
-          <th>Usuario</th>
+                    <div class="clearfix"></div>
+                </div>
 
-        </tr>
-      </thead>
+                <div class="widget-content">
 
-      {% for usuario in historia %}
+                    <table id="datatable" class="table table-striped table-bordered table-hover">
+                        <thead>
+                        <tr>
 
-      <tr>
+                            <th>Nombre del spot</th>
+                            <th>Fecha de Orden</th>
+                            <th>Servicios</th>
+                            <th>Usuario</th>
+                            <th>Acciones</th>
 
-        <td>{{ usuario.servicio }}</td>
-        <td> {{usuario.fecha_cambio}}</td>
-        <td> {{usuario.servicio.usuario}}</td>
+                        </tr>
+                        </thead>
 
-      </tr>
-      {% endfor %}
+                        {% for usuario in consulta %}
 
-    </table>
-  </div>
+                            <tr>
 
-</div>
+                                <td>{{ usuario.nombre }}</td>
+                                <td> {{ usuario.fecha_orden }}</td>
+                                <td>{{ usuario.numero_orden }}</td>
+                                <td>{{ usuario.usuario }}</td>
+                                <td>
+                                    <button class="btn btn-xs btn-success"
+                                            onclick=location.href="{% url 'detalle_spot' usuario.id %}"><i
+                                            class="label label-success"></i>Detalles
+                                    </button>
+                                </td>
+
+                            </tr>
+                        {% endfor %}
+
+                    </table>
 
 
-<div>
-  <button class="btn btn-xs btn-danger" onclick=location.href="{% url 'inicio' %}" type="submit"><i class="label label-danger"></i>Atras</button>
-</div>
+                    <br>
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="widget">
+                <div class="widget-content">
+
+                    <table id="datatable" class="table table-striped table-bordered table-hover">
+                        <thead>
+                        <tr>
+
+                            <th>Nombre</th>
+                            <th>Fecha Modificación</th>
+                            <th>Usuario</th>
+
+                        </tr>
+                        </thead>
+
+                        {% for usuario in historia %}
+
+                            <tr>
+
+                                <td>{{ usuario.servicio }}</td>
+                                <td> {{ usuario.fecha_cambio }}</td>
+                                <td> {{ usuario.servicio.usuario }}</td>
+
+                            </tr>
+                        {% endfor %}
+
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div>
+        <button class="btn btn-xs btn-danger" onclick=location.href="{% url 'inicio' %}" type="submit"><i
+                class="label label-danger"></i>Atras
+        </button>
+    </div>
 
 {% endblock contenido %}
+{% block script %}
+    <script type="text/javascript">
+        {#        function confirmar(id) {#}
+        {#            if (confirm("¿Seguro que desea editar la orden?")) {#}
+        {#                // Respuesta afirmativa..#}
+        {#                window.location.href = '/ordenes/editar/' + id;#}
+        {#            }#}
+        {##}
+        {#        }#}
+        $(function () {
+            $('#fechas_1').datetimepicker({
+                pickTime: false
+            });
+            $('#fechas_2').datetimepicker({
+                pickTime: false
+            });
+        });
+    </script>
+{% endblock script %}
